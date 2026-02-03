@@ -21,9 +21,7 @@ describe('Articles', () => {
   describe('list', () => {
     it('should fetch articles without params', async () => {
       const mockResponse = {
-        Articles: [
-          { ArticleNumber: 'ART001', Description: 'Test Article' },
-        ],
+        Articles: [{ ArticleNumber: 'ART001', Description: 'Test Article' }],
       };
 
       mockHttpClient.get.mockResolvedValueOnce(mockResponse);
@@ -193,9 +191,7 @@ describe('Articles', () => {
     });
 
     it('should throw error when article number is empty', async () => {
-      await expect(articles.update('', { Description: 'Test' })).rejects.toThrow(
-        ValidationError
-      );
+      await expect(articles.update('', { Description: 'Test' })).rejects.toThrow(ValidationError);
     });
 
     it('should throw error when no fields provided', async () => {

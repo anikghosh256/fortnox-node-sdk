@@ -36,7 +36,7 @@ describe('TokenStore', () => {
       tokenStore.setTokens(tokens);
 
       expect(tokenStore.isAccessTokenExpired()).toBe(false);
-      
+
       // Token should not be expired yet
       expect(tokenStore.isAccessTokenExpired()).toBe(false);
     });

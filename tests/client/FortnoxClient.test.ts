@@ -23,7 +23,7 @@ describe('FortnoxClient', () => {
 
       // Trying to modify config should not affect the client
       config.clientId = 'modified';
-      
+
       expect(client.getAuthManager()).toBeDefined();
     });
 

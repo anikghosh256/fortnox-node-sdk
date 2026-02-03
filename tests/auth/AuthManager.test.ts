@@ -96,9 +96,9 @@ describe('AuthManager', () => {
     });
 
     it('should reject invalid state', async () => {
-      await expect(
-        authManager.exchangeCodeForToken('auth_code', 'invalid_state')
-      ).rejects.toThrow(AuthenticationError);
+      await expect(authManager.exchangeCodeForToken('auth_code', 'invalid_state')).rejects.toThrow(
+        AuthenticationError
+      );
     });
 
     it('should throw error on failed token exchange', async () => {
@@ -109,9 +109,9 @@ describe('AuthManager', () => {
         text: async () => 'Invalid authorization code',
       });
 
-      await expect(
-        authManager.exchangeCodeForToken('invalid_code', state)
-      ).rejects.toThrow(AuthenticationError);
+      await expect(authManager.exchangeCodeForToken('invalid_code', state)).rejects.toThrow(
+        AuthenticationError
+      );
     });
 
     it('should call onTokenRefresh callback', async () => {
@@ -227,7 +227,7 @@ describe('AuthManager', () => {
 
     it('should auto-refresh when token expires soon', async () => {
       const { state } = authManager.getAuthorizationUrl();
-      
+
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         ok: true,
         json: async () => ({
