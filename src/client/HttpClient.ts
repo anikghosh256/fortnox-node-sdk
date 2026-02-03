@@ -13,15 +13,22 @@ import {
 export class HttpClient {
   private readonly baseUrl: string;
   private readonly authManager: AuthManager;
+  private readonly config: FortnoxConfig;
 
   constructor(config: FortnoxConfig, authManager: AuthManager) {
     this.baseUrl = config.baseUrl || 'https://api.fortnox.se/3';
     this.authManager = authManager;
+    this.config = config;
   }
 
   async request<T>(method: string, path: string, options?: HttpClientOptions): Promise<T> {
     const accessToken = await this.authManager.getValidAccessToken();
     const url = this.buildUrl(path, options?.params);
+    
+    // Debug logging for URL construction (only when log config is enabled)
+    if (this.config.log) {
+      console.log(`Making request to URL: ${url}`);
+    }
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
@@ -189,7 +196,9 @@ export class HttpClient {
   }
 
   private buildUrl(path: string, params?: Record<string, string | number | boolean>): string {
-    const url = new URL(path, this.baseUrl);
+    // Remove leading slash from path to ensure proper URL concatenation
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    const url = new URL(cleanPath, this.baseUrl.endsWith('/') ? this.baseUrl : `${this.baseUrl}/`);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         url.searchParams.append(key, String(value));

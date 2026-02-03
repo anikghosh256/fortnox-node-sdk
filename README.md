@@ -36,6 +36,7 @@ const client = new FortnoxClient({
   clientSecret: 'your-client-secret',
   redirectUri: 'https://yourapp.com/callback',
   scopes: ['article', 'companyinformation'],
+  log: true, // Enable debug logging (optional)
 });
 ```
 
@@ -83,6 +84,7 @@ await client.articles.delete('ART001');
 | `redirectUri` | string | Yes | OAuth redirect URI |
 | `scopes` | string[] | No | API scopes (default: ['article']) |
 | `baseUrl` | string | No | API base URL |
+| `log` | boolean | No | Enable debug logging (default: false) |
 | `onTokenRefresh` | function | No | Callback when tokens refresh |
 | `onTokenExpire` | function | No | Callback when refresh token expires |
 | `initialAccessToken` | string | No | Existing access token |
@@ -101,6 +103,7 @@ const client = new FortnoxClient({
   redirectUri: 'https://yourapp.com/callback',
   initialAccessToken: loadedAccessToken,
   initialRefreshToken: loadedRefreshToken,
+  log: false, // Disable logging in production
   onTokenRefresh: async (tokens) => {
     await db.saveTokens(tokens);
   },

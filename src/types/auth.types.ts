@@ -4,6 +4,7 @@ export interface FortnoxConfig {
   redirectUri: string;
   scopes?: string[];
   baseUrl?: string;
+  log?: boolean;
   onTokenRefresh?: (tokens: TokenResponse) => void | Promise<void>;
   onTokenExpire?: () => void | Promise<void>;
   initialAccessToken?: string;
