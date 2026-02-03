@@ -19,11 +19,7 @@ export class HttpClient {
     this.authManager = authManager;
   }
 
-  async request<T>(
-    method: string,
-    path: string,
-    options?: HttpClientOptions
-  ): Promise<T> {
+  async request<T>(method: string, path: string, options?: HttpClientOptions): Promise<T> {
     const accessToken = await this.authManager.getValidAccessToken();
     const url = this.buildUrl(path, options?.params);
 

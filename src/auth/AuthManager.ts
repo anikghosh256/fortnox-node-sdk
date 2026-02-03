@@ -1,6 +1,11 @@
 import { randomBytes } from 'crypto';
 import { TokenStore } from './TokenStore';
-import { FortnoxConfig, TokenResponse, AuthorizationUrlResult, AuthParams } from '../types/auth.types';
+import {
+  FortnoxConfig,
+  TokenResponse,
+  AuthorizationUrlResult,
+  AuthParams,
+} from '../types/auth.types';
 import { AuthenticationError } from '../errors/FortnoxError';
 
 export class AuthManager {
@@ -58,7 +63,9 @@ export class AuthManager {
       throw new AuthenticationError('Invalid or expired state parameter');
     }
 
-    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString('base64');
+    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString(
+      'base64'
+    );
 
     const body = new URLSearchParams({
       grant_type: 'authorization_code',
@@ -77,7 +84,11 @@ export class AuthManager {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new AuthenticationError(`Failed to exchange code for token: ${errorText}`, undefined, errorText);
+      throw new AuthenticationError(
+        `Failed to exchange code for token: ${errorText}`,
+        undefined,
+        errorText
+      );
     }
 
     const tokens = (await response.json()) as TokenResponse;
@@ -96,7 +107,9 @@ export class AuthManager {
       throw new AuthenticationError('No refresh token available');
     }
 
-    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString('base64');
+    const credentials = Buffer.from(`${this.config.clientId}:${this.config.clientSecret}`).toString(
+      'base64'
+    );
 
     const body = new URLSearchParams({
       grant_type: 'refresh_token',

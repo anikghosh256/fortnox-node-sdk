@@ -14,10 +14,10 @@ export class FortnoxClient {
   constructor(config: FortnoxConfig) {
     this.validateConfig(config);
     this.config = Object.freeze({ ...config });
-    
+
     this.authManager = new AuthManager(this.config);
     this.httpClient = new HttpClient(this.config, this.authManager);
-    
+
     this.articles = new Articles(this.httpClient);
   }
 
