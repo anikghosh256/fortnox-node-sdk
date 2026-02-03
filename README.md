@@ -35,14 +35,14 @@ const client = new FortnoxClient({
   clientId: 'your-client-id',
   clientSecret: 'your-client-secret',
   redirectUri: 'https://yourapp.com/callback',
-  scopes: ['article', 'companyinformation'], // Optional
+  scopes: ['article', 'companyinformation'],
 });
 ```
 
-### 2. OAuth Authentication Flow
+### OAuth Authentication
 
 ```typescript
-});Generate authorization URL
+// Generate authorization URL
 const { url, state } = client.getAuthManager().getAuthorizationUrl();
 // Store state in session: req.session.state = state
 // Redirect user: res.redirect(url)
@@ -54,18 +54,7 @@ const tokens = await client.getAuthManager().exchangeCodeForToken(code, state);
 ### Articles API
 
 ```typescript
-// List all articles
-const articles = await client.articles.list({ page: 1, limit: 10 });
-
-// Get a specific article
-const article = await client.articles.get('ART001');
-
-// Create a new article
-const newArticle = await client.articles.create({
-  Description: 'My Product',
-  SalesPrice: 99.99,
-  VAT: 25,
-  Type:
+// List
 const articles = await client.articles.list({ page: 1, limit: 10 });
 
 // Get
@@ -85,13 +74,8 @@ await client.articles.update('ART001', { SalesPrice: 129.99 });
 await client.articles.delete('ART001');
 ```
 
-## Configuration        // API base URL (default: 'https://api.fortnox.se/3')
-  
-  // Callbacks for token management
-  onTokenRefresh?: (tokens: TokenResponse) => void | Promise<void>;
-  onTokenExpire?: () => void | Promise<void>;
-  
-  // Pre-existing tokens (for resuming sessions)
+## Configuration
+
 | Option | Type | Required | Description |
 |--------|------|----------|-------------|
 | `clientId` | string | Yes | Fortnox client ID |
@@ -108,14 +92,14 @@ await client.articles.delete('ART001');
 
 Access tokens are automatically refreshed 5 minutes before expiry.
 
-### PersistTokensToDatabase(tokens.access_token, tokens.refresh_token);
-  },
-  
-  // Handle token expiration (refresh token expired)
-  onTokenExpire: async () => {
-    await notifyUserToReAuthenticate();
-  },
-})initialAccessToken: loadedAccessToken,
+### Persist Tokens
+
+```typescript
+const client = new FortnoxClient({
+  clientId: 'your-client-id',
+  clientSecret: 'your-client-secret',
+  redirectUri: 'https://yourapp.com/callback',
+  initialAccessToken: loadedAccessToken,
   initialRefreshToken: loadedRefreshToken,
   onTokenRefresh: async (tokens) => {
     await db.saveTokens(tokens);
@@ -127,84 +111,11 @@ Access tokens are automatically refreshed 5 minutes before expiry.
 - Access token: 1 hour
 - Refresh token: 45 days
 - Both tokens regenerate on refresh
-try {
-  const article = await client.articles.get('ART001');
-} catch (error) {
-  if (error instanceof AuthenticationError) {
-    // Handle auth errors (401, 403)
-    console.error('Authentication failed:', error.message);
-  } else if (error instanceof NotFoundError) {
-    // Handle not found errors (404)
-    console.error('Article not found:', error.message);
-  } else if (error instanceof ValidationError) {
-    // Handle validation errors (400)
-    console.error('Invalid input:', error.message);
-  } else if (error instanceof ApiError) {
-    // Handle other API errors
-    console.error('API error:', error.message, error.code);
-  }
-}
-```
 
-### Error Properties
-
-All error types extend `FortnoxError` and include:
+## Error Handling
 
 ```typescript
-{
-  message: string;      // Error message
-  code?: number;        // Fortnox error code
-  statusCode?: number;  // HTTP status code
-  details?: unknown;    // Additional error details
-}
-```
-
-## Complete Example
-
-```typescript
-import { FortnoxClient } from '@anikghosh256/fortnox-node-sdk';
-
-async function main() {
-  // Initialize client
-  const client = new FortnoxClient({
-    clientId: process.env.FORTNOX_CLIENT_ID!,
-    clientSecret: process.env.FORTNOX_CLIENT_SECRET!,
-    redirectUri: 'https://yourapp.com/callback',
-    scopes: ['article'],
-    onTokenRefresh: async (tokens) => {
-      console.log('Tokens refreshed!');
-      // Save to database
-    },
-  });
-
-  // Generate auth URL
-  const { url, state } = client.getAuthManager().getAuthorizationUrl();
-  console.log('Visit this URL to authorize:', url);
-
-  // After user authorizes and you receive the callback...
-  // const tokens = await client.getAuthManager().exchangeCodeForToken(code, state);
-
-  // List articles
-  const articleList = await client.articles.list({ limit: 5 });
-  console.log('Articles:', articleList.Articles);
-
-  // Create article
-  const newArticle = await client.articles.create({
-    Description: 'Test Product',
-    SalesPrice: 99.99,
-    VAT: 25,
-  });
-  console.log('Created:', newArticle);
-
-  // Update article
-  const updated = await client.articles.update(newArticle.ArticleNumber, {
-    SalesPrice: 89.99,
-  });
-  console.log('Updated:', updated);
-
-  // Delete article
-  await client.articles.delete(newArticle.ArticleNumber);
-  consol AuthenticationError, ValidationError, NotFoundError } from '@anikghosh256/fortnox-node-sdk';
+import { AuthenticationError, ValidationError, NotFoundError } from '@anikghosh256/fortnox-node-sdk';
 
 try {
   const article = await client.articles.get('ART001');
@@ -224,7 +135,12 @@ try {
 - `ValidationError` - 400 responses
 - `NotFoundError` - 404 responses
 - `RateLimitError` - 429 responses
-- `ApiError` - Other API errorsnpm install          # Install dependencies
+- `ApiError` - Other API errors
+
+## Development
+
+```bash
+npm install          # Install dependencies
 npm test             # Run tests
 npm run build        # Build package
 npm run lint         # Lint code
