@@ -16,13 +16,13 @@ describe('HttpClient URL Building', () => {
     clientId: 'test_client_id',
     clientSecret: 'test_client_secret',
     redirectUri: 'https://example.com/callback',
-    baseUrl: 'https://api.fortnox.se/3'
+    baseUrl: 'https://api.fortnox.se/3',
   };
 
   beforeEach(() => {
     mockAuthManager = new AuthManager(config) as jest.Mocked<AuthManager>;
     mockAuthManager.getValidAccessToken = jest.fn().mockResolvedValue('test_token');
-    
+
     httpClient = new HttpClient(config, mockAuthManager);
 
     // Clear all mocks
@@ -38,7 +38,7 @@ describe('HttpClient URL Building', () => {
       },
       json: jest.fn().mockResolvedValue({ Articles: [] }),
     };
-    
+
     (global.fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse as any);
 
     await httpClient.get('/articles');
@@ -48,7 +48,7 @@ describe('HttpClient URL Building', () => {
       expect.objectContaining({
         method: 'GET',
         headers: expect.objectContaining({
-          'Authorization': 'Bearer test_token',
+          Authorization: 'Bearer test_token',
         }),
       })
     );
@@ -63,7 +63,7 @@ describe('HttpClient URL Building', () => {
       },
       json: jest.fn().mockResolvedValue({ Articles: [] }),
     };
-    
+
     (global.fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse as any);
 
     await httpClient.get('/articles', { page: 1, limit: 10 });
@@ -79,11 +79,11 @@ describe('HttpClient URL Building', () => {
   it('should handle baseUrl without trailing slash', async () => {
     const configWithoutSlash: FortnoxConfig = {
       ...config,
-      baseUrl: 'https://api.fortnox.se/3'
+      baseUrl: 'https://api.fortnox.se/3',
     };
-    
+
     const httpClientWithoutSlash = new HttpClient(configWithoutSlash, mockAuthManager);
-    
+
     const mockResponse = {
       ok: true,
       status: 200,
@@ -92,7 +92,7 @@ describe('HttpClient URL Building', () => {
       },
       json: jest.fn().mockResolvedValue({ Articles: [] }),
     };
-    
+
     (global.fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse as any);
 
     await httpClientWithoutSlash.get('/articles');
@@ -106,11 +106,11 @@ describe('HttpClient URL Building', () => {
   it('should handle baseUrl with trailing slash', async () => {
     const configWithSlash: FortnoxConfig = {
       ...config,
-      baseUrl: 'https://api.fortnox.se/3/'
+      baseUrl: 'https://api.fortnox.se/3/',
     };
-    
+
     const httpClientWithSlash = new HttpClient(configWithSlash, mockAuthManager);
-    
+
     const mockResponse = {
       ok: true,
       status: 200,
@@ -119,7 +119,7 @@ describe('HttpClient URL Building', () => {
       },
       json: jest.fn().mockResolvedValue({ Articles: [] }),
     };
-    
+
     (global.fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse as any);
 
     await httpClientWithSlash.get('/articles');
@@ -139,7 +139,7 @@ describe('HttpClient URL Building', () => {
       },
       json: jest.fn().mockResolvedValue({ Articles: [] }),
     };
-    
+
     (global.fetch as jest.MockedFunction<typeof fetch>).mockResolvedValue(mockResponse as any);
 
     await httpClient.get('articles');

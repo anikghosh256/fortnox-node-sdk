@@ -6,10 +6,6 @@ import {
   ApiError,
 } from '../src';
 
-/**
- * Articles CRUD operations example
- * Demonstrates all article operations with proper error handling
- */
 async function articlesCRUDExample() {
   const client = new FortnoxClient({
     clientId: process.env.FORTNOX_CLIENT_ID!,
@@ -18,8 +14,7 @@ async function articlesCRUDExample() {
   });
 
   try {
-    // CREATE
-    console.log('[INFO] Creating article...');
+    // Create article
     const newArticle = await client.articles.create({
       Description: 'Professional Widget',
       SalesPrice: 199.99,
@@ -28,35 +23,31 @@ async function articlesCRUDExample() {
       Type: 'STOCK',
       Active: true,
     });
-    console.log(`[SUCCESS] Created article: ${newArticle.ArticleNumber}`);
+    console.log(`Created article: ${newArticle.ArticleNumber}`);
     const articleNumber = newArticle.ArticleNumber;
 
-    // READ (Single)
-    console.log(`[INFO] Fetching article: ${articleNumber}`);
+    // Get single article
     const article = await client.articles.get(articleNumber);
-    console.log(`[SUCCESS] ${article.Description} - ${article.SalesPrice} SEK`);
+    console.log(`${article.Description} - ${article.SalesPrice} SEK`);
 
-    // READ (List with pagination)
-    console.log('[INFO] Fetching articles (page 1, limit 10)');
+    // List articles with pagination
     const articleList = await client.articles.list({
       page: 1,
       limit: 10,
       sortby: 'articlenumber',
       sortorder: 'descending',
     });
-    console.log(`[SUCCESS] Retrieved ${articleList.Articles.length} articles`);
+    console.log(`Retrieved ${articleList.Articles.length} articles`);
 
-    // UPDATE
-    console.log(`[INFO] Updating article: ${articleNumber}`);
+    // Update article
     const updated = await client.articles.update(articleNumber, {
       SalesPrice: 249.99,
     });
-    console.log(`[SUCCESS] Updated price to ${updated.SalesPrice} SEK`);
+    console.log(`Updated price to ${updated.SalesPrice} SEK`);
 
-    // DELETE
-    console.log(`[INFO] Deleting article: ${articleNumber}`);
+    // Delete article
     await client.articles.delete(articleNumber);
-    console.log('[SUCCESS] Article deleted');
+    console.log('Article deleted');
   } catch (error) {
     handleError(error);
   }
@@ -76,13 +67,13 @@ async function bulkOperationsExample() {
       { Description: 'Widget C', SalesPrice: 30.99, VAT: 25 },
     ];
 
-    console.log(`[INFO] Creating ${articlesData.length} articles...`);
+    // Bulk create
     const created = await Promise.all(
       articlesData.map((data) => client.articles.create(data))
     );
-    console.log(`[SUCCESS] Created ${created.length} articles`);
+    console.log(`Created ${created.length} articles`);
 
-    console.log('[INFO] Updating prices (10% increase)...');
+    // Bulk update
     const updated = await Promise.all(
       created.map((article) =>
         client.articles.update(article.ArticleNumber, {
@@ -90,11 +81,11 @@ async function bulkOperationsExample() {
         })
       )
     );
-    console.log(`[SUCCESS] Updated ${updated.length} articles`);
+    console.log(`Updated ${updated.length} articles`);
 
-    console.log('[INFO] Cleaning up test articles...');
+    // Cleanup
     await Promise.all(created.map((a) => client.articles.delete(a.ArticleNumber)));
-    console.log('[SUCCESS] Cleanup complete');
+    console.log('Cleanup complete');
   } catch (error) {
     handleError(error);
   }
@@ -108,14 +99,12 @@ async function errorHandlingExample() {
   });
 
   try {
-    console.log('[INFO] Attempting to fetch non-existent article');
     await client.articles.get('NONEXISTENT');
   } catch (error) {
     handleError(error);
   }
 
   try {
-    console.log('[INFO] Creating article with invalid VAT value');
     await client.articles.create({ Description: 'Test', VAT: 150 });
   } catch (error) {
     handleError(error);
@@ -124,18 +113,16 @@ async function errorHandlingExample() {
 
 function handleError(error: unknown): void {
   if (error instanceof AuthenticationError) {
-    console.error('[ERROR] Authentication failed:', error.message);
-    console.error('  Code:', error.code, 'Status:', error.statusCode);
+    console.error('Authentication failed:', error.message);
   } else if (error instanceof ValidationError) {
-    console.error('[ERROR] Validation failed:', error.message);
-    if (error.details) console.error('  Details:', JSON.stringify(error.details));
+    console.error('Validation failed:', error.message);
+    if (error.details) console.error('Details:', JSON.stringify(error.details));
   } else if (error instanceof NotFoundError) {
-    console.error('[ERROR] Resource not found:', error.message);
+    console.error('Resource not found:', error.message);
   } else if (error instanceof ApiError) {
-    console.error('[ERROR] API error:', error.message);
-    console.error('  Code:', error.code, 'Status:', error.statusCode);
+    console.error('API error:', error.message);
   } else {
-    console.error('[ERROR] Unknown error:', error);
+    console.error('Unknown error:', error);
   }
 }
 
