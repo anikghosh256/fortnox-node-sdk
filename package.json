@@ -1,6 +1,6 @@
 {
   "name": "@anikghosh256/fortnox-node-sdk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Modern Node.js SDK for Fortnox API with native fetch and automatic token refresh",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
