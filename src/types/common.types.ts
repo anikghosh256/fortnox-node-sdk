@@ -1,8 +1,8 @@
 export interface FortnoxErrorResponse {
   ErrorInformation: {
-    error: number;
-    message: string;
-    code: number;
+    Error: number;
+    Message: string;
+    Code: number;
   };
 }
 

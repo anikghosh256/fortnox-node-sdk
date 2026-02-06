@@ -166,7 +166,7 @@ export class HttpClient {
 
   private parseError(errorData: unknown, statusCode: number): FortnoxError {
     if (this.isFortnoxErrorResponse(errorData)) {
-      const { message, code } = errorData.ErrorInformation;
+      const { Message: message, Code: code } = errorData.ErrorInformation;
 
       switch (statusCode) {
         case 400:
