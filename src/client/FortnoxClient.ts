@@ -2,6 +2,7 @@ import { FortnoxConfig } from '../types/auth.types';
 import { AuthManager } from '../auth/AuthManager';
 import { HttpClient } from './HttpClient';
 import { Articles } from '../resources/Articles';
+import { Orders } from '../resources/Orders';
 import { ValidationError } from '../errors/FortnoxError';
 
 export class FortnoxClient {
@@ -10,6 +11,7 @@ export class FortnoxClient {
   private readonly httpClient: HttpClient;
 
   public readonly articles: Articles;
+  public readonly orders: Orders;
 
   constructor(config: FortnoxConfig) {
     this.validateConfig(config);
@@ -19,6 +21,7 @@ export class FortnoxClient {
     this.httpClient = new HttpClient(this.config, this.authManager);
 
     this.articles = new Articles(this.httpClient);
+    this.orders = new Orders(this.httpClient);
   }
 
   getAuthManager(): AuthManager {

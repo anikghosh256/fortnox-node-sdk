@@ -15,6 +15,7 @@ Modern TypeScript SDK for Fortnox API with OAuth 2.0 and automatic token refresh
 - Full TypeScript support
 - Comprehensive error handling
 - Articles CRUD operations
+- Orders management with invoicing support
 
 ## Installation
 
@@ -73,6 +74,66 @@ await client.articles.update('ART001', { SalesPrice: 129.99 });
 
 // Delete
 await client.articles.delete('ART001');
+```
+
+### Orders API
+
+```typescript
+// List orders with filters
+const orders = await client.orders.list({
+  customernumber: 'C001',
+  orderdatefrom: '2024-01-01',
+  orderdateto: '2024-12-31',
+  notcompleted: true,
+  page: 1,
+  limit: 10,
+});
+
+// Get single order
+const order = await client.orders.get('1');
+
+// Create order
+const newOrder = await client.orders.create({
+  CustomerNumber: 'C001',
+  OrderDate: '2024-01-15',
+  DeliveryDate: '2024-01-20',
+  OrderRows: [
+    {
+      ArticleNumber: 'ART001',
+      OrderedQuantity: '5',
+      Price: 150,
+      VAT: 25,
+      Discount: 10,
+    },
+  ],
+  Comments: 'Urgent order',
+  Language: 'EN',
+  Freight: 50,
+});
+
+// Update order
+await client.orders.update('1', {
+  Comments: 'Updated comment',
+  DeliveryDate: '2024-01-18',
+});
+
+// Cancel order
+await client.orders.cancel('1');
+
+// Create invoice from order
+const invoice = await client.orders.createInvoice('1');
+
+// Send order by email
+await client.orders.sendEmail('1');
+
+// Print order (returns PDF buffer)
+const pdfBuffer = await client.orders.print('1');
+
+// Preview order (returns PDF buffer without marking as printed)
+const previewBuffer = await client.orders.preview('1');
+
+// Get external print template
+const printData = await client.orders.externalPrint('1');
 ```
 
 ## Configuration
