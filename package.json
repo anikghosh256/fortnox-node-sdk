@@ -1,7 +1,7 @@
 {
   "name": "@anikghosh256/fortnox-node-sdk",
-  "version": "0.1.0",
-  "description": "Modern Node.js SDK for Fortnox API with native fetch and automatic token refresh",
+  "version": "0.2.0",
+  "description": "Modern Node.js SDK for Fortnox API with OAuth 2.0, automatic token refresh, and support for Articles, Orders, Price Lists, and Pricing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -23,10 +23,19 @@
     "api",
     "sdk",
     "accounting",
+    "invoicing",
+    "orders",
+    "articles",
+    "pricelists",
+    "pricing",
+    "erp",
     "oauth",
+    "oauth2",
     "typescript",
     "node",
-    "fetch"
+    "fetch",
+    "e-commerce",
+    "b2b"
   ],
   "author": "Onik G.",
   "license": "MIT",
