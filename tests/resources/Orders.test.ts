@@ -253,9 +253,7 @@ describe('Orders', () => {
       };
 
       await expect(orders.create(input)).rejects.toThrow(ValidationError);
-      await expect(orders.create(input)).rejects.toThrow(
-        'Order row 1: Price cannot be negative'
-      );
+      await expect(orders.create(input)).rejects.toThrow('Order row 1: Price cannot be negative');
     });
 
     it('should throw error for invalid Discount', async () => {
@@ -302,9 +300,7 @@ describe('Orders', () => {
       };
 
       await expect(orders.create(input)).rejects.toThrow(ValidationError);
-      await expect(orders.create(input)).rejects.toThrow(
-        'OrderType must be ORDER, OFFER, or CASE'
-      );
+      await expect(orders.create(input)).rejects.toThrow('OrderType must be ORDER, OFFER, or CASE');
     });
 
     it('should throw error for invalid Language', async () => {
@@ -339,9 +335,7 @@ describe('Orders', () => {
       };
 
       await expect(orders.create(input)).rejects.toThrow(ValidationError);
-      await expect(orders.create(input)).rejects.toThrow(
-        'OrderDate must be in YYYY-MM-DD format'
-      );
+      await expect(orders.create(input)).rejects.toThrow('OrderDate must be in YYYY-MM-DD format');
     });
 
     it('should throw error for invalid DeliveryDate format', async () => {
@@ -376,9 +370,7 @@ describe('Orders', () => {
       };
 
       await expect(orders.create(input)).rejects.toThrow(ValidationError);
-      await expect(orders.create(input)).rejects.toThrow(
-        'AdministrationFee cannot be negative'
-      );
+      await expect(orders.create(input)).rejects.toThrow('AdministrationFee cannot be negative');
     });
   });
 

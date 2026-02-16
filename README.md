@@ -16,6 +16,7 @@ Modern TypeScript SDK for Fortnox API with OAuth 2.0 and automatic token refresh
 - Comprehensive error handling
 - Articles CRUD operations
 - Orders management with invoicing support
+- Price Lists and Pricing management
 
 ## Installation
 
@@ -134,6 +135,81 @@ const previewBuffer = await client.orders.preview('1');
 
 // Get external print template
 const printData = await client.orders.externalPrint('1');
+```
+
+### Price Lists API
+
+```typescript
+// List all price lists
+const priceLists = await client.priceLists.list();
+
+// Get specific price list
+const priceList = await client.priceLists.get('A');
+
+// Create new price list
+const newPriceList = await client.priceLists.create({
+  Code: 'WHOLESALE',
+  Description: 'Wholesale Prices',
+  Comments: 'For wholesale customers',
+  PreSelected: false,
+});
+
+// Update price list
+await client.priceLists.update('WHOLESALE', {
+  Description: 'Updated Wholesale Prices',
+  Comments: 'New comment',
+});
+
+// Delete price list
+await client.priceLists.delete('WHOLESALE');
+```
+
+### Prices API
+
+```typescript
+// List all prices (optionally filter by price list)
+const allPrices = await client.prices.list({
+  pricelist: 'A',
+  articlenumber: 'ART001',
+});
+
+// Get specific price
+const price = await client.prices.get('A', 'ART001');
+
+// Get price for specific quantity level (volume pricing)
+const bulkPrice = await client.prices.get('A', 'ART001', 100);
+
+// Create new price (using fixed price)
+await client.prices.create({
+  ArticleNumber: 'ART001',
+  PriceList: 'WHOLESALE',
+  Price: 85.00,
+  FromQuantity: 1,
+});
+
+// Create price using percentage discount
+await client.prices.create({
+  ArticleNumber: 'ART001',
+  PriceList: 'VIP',
+  Percent: -15, // 15% discount
+  FromQuantity: 1,
+});
+
+// Create volume discount (bulk pricing)
+await client.prices.create({
+  ArticleNumber: 'ART001',
+  PriceList: 'WHOLESALE',
+  Price: 75.00, // Lower price
+  FromQuantity: 100, // When buying 100+
+});
+
+// Update price
+await client.prices.update('WHOLESALE', 'ART001', 1, {
+  Price: 80.00,
+});
+
+// Delete price
+await client.prices.delete('WHOLESALE', 'ART001', 1);
 ```
 
 ## Configuration
