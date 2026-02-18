@@ -44,10 +44,10 @@ describe('Customers', () => {
 
       mockHttpClient.get.mockResolvedValueOnce(mockResponse);
 
-      const result = await customers.list({ 
+      const result = await customers.list({
         filter: 'active',
         city: 'Stockholm',
-        sortby: 'name'
+        sortby: 'name',
       });
 
       expect(result).toEqual(mockResponse);

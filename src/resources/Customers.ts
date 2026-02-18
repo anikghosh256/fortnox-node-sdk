@@ -41,7 +41,9 @@ export class Customers {
       throw new ValidationError('Customer number is required');
     }
 
-    const response = await this.httpClient.get<CustomerWrapper>(`${this.basePath}/${customerNumber}`);
+    const response = await this.httpClient.get<CustomerWrapper>(
+      `${this.basePath}/${customerNumber}`
+    );
     return response.Customer;
   }
 
@@ -91,7 +93,10 @@ export class Customers {
       throw new ValidationError('Type must be either PRIVATE or COMPANY');
     }
 
-    if (customer.VATType && !['SEVAT', 'SEREVERSEDVAT', 'EUREVERSEDVAT', 'EUVAT', 'EXPORT'].includes(customer.VATType)) {
+    if (
+      customer.VATType &&
+      !['SEVAT', 'SEREVERSEDVAT', 'EUREVERSEDVAT', 'EUVAT', 'EXPORT'].includes(customer.VATType)
+    ) {
       throw new ValidationError('Invalid VAT type');
     }
 
