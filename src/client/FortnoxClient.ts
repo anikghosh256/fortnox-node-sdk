@@ -2,6 +2,7 @@ import { FortnoxConfig } from '../types/auth.types';
 import { AuthManager } from '../auth/AuthManager';
 import { HttpClient } from './HttpClient';
 import { Articles } from '../resources/Articles';
+import { Customers } from '../resources/Customers';
 import { Orders } from '../resources/Orders';
 import { PriceLists } from '../resources/PriceLists';
 import { Prices } from '../resources/Prices';
@@ -13,6 +14,7 @@ export class FortnoxClient {
   private readonly httpClient: HttpClient;
 
   public readonly articles: Articles;
+  public readonly customers: Customers;
   public readonly orders: Orders;
   public readonly priceLists: PriceLists;
   public readonly prices: Prices;
@@ -25,6 +27,7 @@ export class FortnoxClient {
     this.httpClient = new HttpClient(this.config, this.authManager);
 
     this.articles = new Articles(this.httpClient);
+    this.customers = new Customers(this.httpClient);
     this.orders = new Orders(this.httpClient);
     this.priceLists = new PriceLists(this.httpClient);
     this.prices = new Prices(this.httpClient);

@@ -15,6 +15,7 @@ Modern TypeScript SDK for Fortnox API with OAuth 2.0 and automatic token refresh
 - Full TypeScript support
 - Comprehensive error handling
 - Articles CRUD operations
+- Customers management
 - Orders management with invoicing support
 - Price Lists and Pricing management
 
@@ -75,6 +76,57 @@ await client.articles.update('ART001', { SalesPrice: 129.99 });
 
 // Delete
 await client.articles.delete('ART001');
+```
+
+### Customers API
+
+```typescript
+// List all customers
+const customers = await client.customers.list();
+
+// List active customers only
+const activeCustomers = await client.customers.list({ 
+  filter: 'active',
+  sortby: 'name'
+});
+
+// Search customers by name, city, email, etc.
+const searchResults = await client.customers.list({
+  name: 'Acme',
+  city: 'Stockholm',
+  email: 'contact@example.com',
+});
+
+// Get specific customer
+const customer = await client.customers.get('CUST001');
+
+// Create new customer
+const newCustomer = await client.customers.create({
+  Name: 'Acme Corporation AB',
+  Type: 'COMPANY',
+  OrganisationNumber: '555555-5555',
+  Email: 'contact@acme.com',
+  Phone1: '+46 8 123 456',
+  Address1: 'Main Street 123',
+  City: 'Stockholm',
+  ZipCode: '11122',
+  CountryCode: 'SE',
+  Currency: 'SEK',
+  VATType: 'SEVAT',
+  Active: true,
+  PriceList: 'A',
+  TermsOfPayment: '30',
+});
+
+// Update customer
+const updated = await client.customers.update('CUST001', {
+  Email: 'newemail@acme.com',
+  Phone1: '+46 8 987 654',
+  Comments: 'VIP customer - priority handling',
+});
+
+// Delete customer
+await client.customers.delete('CUST001');
 ```
 
 ### Orders API

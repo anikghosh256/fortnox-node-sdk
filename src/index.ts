@@ -1,6 +1,7 @@
 export { FortnoxClient } from './client/FortnoxClient';
 export { AuthManager } from './auth/AuthManager';
 export { Articles } from './resources/Articles';
+export { Customers } from './resources/Customers';
 export { Orders } from './resources/Orders';
 export { PriceLists } from './resources/PriceLists';
 export { Prices } from './resources/Prices';
@@ -20,6 +21,14 @@ export type {
   CreateArticleInput,
   UpdateArticleInput,
 } from './types/article.types';
+
+export type {
+  Customer,
+  CustomerListResponse,
+  CustomerListParams,
+  CreateCustomerInput,
+  UpdateCustomerInput,
+} from './types/customer.types';
 
 export type {
   Order,
