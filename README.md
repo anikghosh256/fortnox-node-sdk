@@ -17,6 +17,7 @@ Modern TypeScript SDK for Fortnox API with OAuth 2.0 and automatic token refresh
 - Articles CRUD operations
 - Customers management
 - Orders management with invoicing support
+- **Invoices management** - create, bookkeep, email, print, credit
 - Price Lists and Pricing management
 
 ## Installation
@@ -187,6 +188,86 @@ const previewBuffer = await client.orders.preview('1');
 
 // Get external print template
 const printData = await client.orders.externalPrint('1');
+```
+
+### Invoices API
+
+```typescript
+// List invoices with filters
+const invoices = await client.invoices.list({
+  filter: 'unpaid',
+  customernumber: 'CUST001',
+  fromdate: '2024-01-01',
+  todate: '2024-12-31',
+  sortby: 'invoicedate',
+});
+
+// Get specific invoice
+const invoice = await client.invoices.get('1');
+
+// Create invoice
+const newInvoice = await client.invoices.create({
+  CustomerNumber: 'CUST001',
+  InvoiceDate: '2024-02-20',
+  DueDate: '2024-03-20',
+  DeliveryDate: '2024-02-22',
+  Comments: 'Thank you for your business',
+  Language: 'EN',
+  Currency: 'SEK',
+  InvoiceRows: [
+    {
+      ArticleNumber: 'ART001',
+      Description: 'Consulting Services',
+      Price: 1500,
+      VAT: 25,
+      Discount: 10,
+    },
+  ],
+  OurReference: 'John Doe',
+  YourReference: 'Jane Smith',
+  Freight: 100,
+  AdministrationFee: 50,
+});
+
+// Update invoice
+await client.invoices.update('1', {
+  Comments: 'Updated payment terms',
+  Remarks: 'Payment within 45 days',
+});
+
+// Bookkeep invoice (finalize for accounting)
+const bookedInvoice = await client.invoices.bookkeep('1');
+
+// Cancel invoice
+const cancelledInvoice = await client.invoices.cancel('1');
+
+// Create credit invoice
+const creditInvoice = await client.invoices.credit('1');
+
+// Send invoice by email
+await client.invoices.sendEmail('1');
+
+// Print invoice (returns PDF buffer)
+const pdfBuffer = await client.invoices.print('1');
+
+// Preview invoice (returns PDF without marking as sent)
+const previewBuffer = await client.invoices.preview('1');
+
+// Mark invoice as sent (external print)
+await client.invoices.externalPrint('1');
+
+// Create invoice with email information
+const invoiceWithEmail = await client.invoices.create({
+  CustomerNumber: 'CUST001',
+  InvoiceDate: '2024-02-20',
+  Currency: 'SEK',
+  InvoiceRows: [{ ArticleNumber: 'ART001', Price: 999, VAT: 25 }],
+  EmailInformation: {
+    EmailAddressTo: 'customer@example.com',
+    EmailSubject: 'Your Invoice',
+    EmailBody: 'Thank you for your business!',
+  },
+});
 ```
 
 ### Price Lists API

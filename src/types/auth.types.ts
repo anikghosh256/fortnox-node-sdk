@@ -1,3 +1,5 @@
+import { Logger } from '../utils/Logger';
+
 export interface FortnoxConfig {
   clientId: string;
   clientSecret: string;
@@ -5,6 +7,7 @@ export interface FortnoxConfig {
   scopes?: string[];
   baseUrl?: string;
   log?: boolean;
+  logger?: Logger;
   onTokenRefresh?: (tokens: TokenResponse) => void | Promise<void>;
   onTokenExpire?: () => void | Promise<void>;
   initialAccessToken?: string;

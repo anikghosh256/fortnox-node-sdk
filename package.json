@@ -1,7 +1,7 @@
 {
   "name": "@anikghosh256/fortnox-node-sdk",
-  "version": "0.2.1",
-  "description": "Modern Node.js SDK for Fortnox API with OAuth 2.0, automatic token refresh, and support for Articles, Customers, Orders, Price Lists, and Pricing",
+  "version": "0.3.0",
+  "description": "Modern Node.js SDK for Fortnox API with OAuth 2.0, automatic token refresh, and support for Articles, Customers, Orders, Invoices, Price Lists, and Pricing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -24,6 +24,7 @@
     "sdk",
     "accounting",
     "invoicing",
+    "invoices",
     "orders",
     "articles",
     "customers",
@@ -36,7 +37,8 @@
     "node",
     "fetch",
     "e-commerce",
-    "b2b"
+    "b2b",
+    "bookkeeping"
   ],
   "author": "Onik G.",
   "license": "MIT",
@@ -60,5 +62,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/anikghosh256/fortnox-node-sdk.git"
+  },
+  "homepage": "https://github.com/anikghosh256/fortnox-node-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/anikghosh256/fortnox-node-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -6,6 +6,7 @@ import { Customers } from '../resources/Customers';
 import { Orders } from '../resources/Orders';
 import { PriceLists } from '../resources/PriceLists';
 import { Prices } from '../resources/Prices';
+import { Invoices } from '../resources/Invoices';
 import { ValidationError } from '../errors/FortnoxError';
 
 export class FortnoxClient {
@@ -18,6 +19,7 @@ export class FortnoxClient {
   public readonly orders: Orders;
   public readonly priceLists: PriceLists;
   public readonly prices: Prices;
+  public readonly invoices: Invoices;
 
   constructor(config: FortnoxConfig) {
     this.validateConfig(config);
@@ -31,6 +33,7 @@ export class FortnoxClient {
     this.orders = new Orders(this.httpClient);
     this.priceLists = new PriceLists(this.httpClient);
     this.prices = new Prices(this.httpClient);
+    this.invoices = new Invoices(this.httpClient);
   }
 
   getAuthManager(): AuthManager {
