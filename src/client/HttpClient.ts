@@ -1,6 +1,7 @@
 import { AuthManager } from '../auth/AuthManager';
 import { FortnoxConfig } from '../types/auth.types';
 import { FortnoxErrorResponse, HttpClientOptions } from '../types/common.types';
+import { Logger, ConsoleLogger, NoOpLogger } from '../utils/Logger';
 import {
   FortnoxError,
   AuthenticationError,
@@ -13,22 +14,19 @@ import {
 export class HttpClient {
   private readonly baseUrl: string;
   private readonly authManager: AuthManager;
-  private readonly config: FortnoxConfig;
+  private readonly logger: Logger;
 
   constructor(config: FortnoxConfig, authManager: AuthManager) {
     this.baseUrl = config.baseUrl || 'https://api.fortnox.se/3';
     this.authManager = authManager;
-    this.config = config;
+    this.logger = config.logger || (config.log ? new ConsoleLogger(true) : new NoOpLogger());
   }
 
   async request<T>(method: string, path: string, options?: HttpClientOptions): Promise<T> {
     const accessToken = await this.authManager.getValidAccessToken();
     const url = this.buildUrl(path, options?.params);
 
-    // Debug logging for URL construction (only when log config is enabled)
-    if (this.config.log) {
-      console.log(`Making request to URL: ${url}`);
-    }
+    this.logger.debug(`Making ${method} request to: ${url}`);
 
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',

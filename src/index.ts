@@ -5,6 +5,10 @@ export { Customers } from './resources/Customers';
 export { Orders } from './resources/Orders';
 export { PriceLists } from './resources/PriceLists';
 export { Prices } from './resources/Prices';
+export { Invoices } from './resources/Invoices';
+
+// Utils
+export { Logger, ConsoleLogger, NoOpLogger } from './utils/Logger';
 
 // Types
 export type {
@@ -57,6 +61,16 @@ export type {
   CreatePriceInput,
   UpdatePriceInput,
 } from './types/price.types';
+
+export type {
+  Invoice,
+  InvoiceRow,
+  Label,
+  InvoiceListResponse,
+  InvoiceListParams,
+  CreateInvoiceInput,
+  UpdateInvoiceInput,
+} from './types/invoice.types';
 
 // Errors
 export {
